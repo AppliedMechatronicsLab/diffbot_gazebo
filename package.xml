@@ -24,6 +24,7 @@
   <depend>navigation2</depend>
   <depend>navigation_msgs</depend>
   <depend>twist_mux</depend>
+  <depend>rtabmap_ros</depend>
   
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
