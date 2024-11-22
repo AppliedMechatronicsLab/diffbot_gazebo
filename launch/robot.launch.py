@@ -34,10 +34,13 @@ def generate_launch_description():
             launch_arguments={'extra_gazebo_args': '--ros-args --params-file ' + gazebo_params_path}.items()
         )
 
-    # gazebo_command = ExecuteProcess(
-    #     cmd=['gazebo', '-s', 'libgazebo_ros_factory.so', world],
-    #     output='screen'
-    # )
+    twist_mux_params = os.path.join(get_package_share_directory(pkg_name),'config','twist_mux.yaml')
+    twist_mux = Node(
+            package="twist_mux",
+            executable="twist_mux",
+            parameters=[twist_mux_params, {'use_sim_time': True}],
+            remappings=[('/cmd_vel_out','/diff_cont/cmd_vel_unstamped')]
+        )
 
 
     spawn_entity = Node(package='gazebo_ros', executable='spawn_entity.py',
@@ -75,7 +78,8 @@ def generate_launch_description():
             description='Path to the world file to load in Gazebo'
         ),
         rsp,
-        gazebo,     
+        gazebo,
+        twist_mux,
         spawn_entity,
         diff_cont_spawner,
         joint_broad_spawner
