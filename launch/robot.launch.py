@@ -3,7 +3,7 @@ from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch_ros.actions import Node
 
-from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument
+from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument, ExecuteProcess
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 from launch.substitutions import LaunchConfiguration
@@ -13,6 +13,9 @@ def generate_launch_description():
 
     use_ros2_control = LaunchConfiguration('use_ros2_control')
     use_depth_cam= LaunchConfiguration('use_depth_cam')
+    world_file_default = os.path.join(pkg_name, 'worlds', 'turtlebot3_world.world')
+    world = LaunchConfiguration('world')
+
     rsp = IncludeLaunchDescription(
                 PythonLaunchDescriptionSource([os.path.join(
                     get_package_share_directory(pkg_name),'launch','rsp.launch.py'
@@ -28,14 +31,20 @@ def generate_launch_description():
     gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([os.path.join(
             get_package_share_directory('gazebo_ros'), 'launch'), '/gazebo.launch.py']),
-            launch_arguments={'extra_gazebo_args': '--ros-args --params-file ' + gazebo_params_path }.items()
+            launch_arguments={'extra_gazebo_args': '--ros-args --params-file ' + gazebo_params_path}.items()
         )
-    
+
+    # gazebo_command = ExecuteProcess(
+    #     cmd=['gazebo', '-s', 'libgazebo_ros_factory.so', world],
+    #     output='screen'
+    # )
+
+
     spawn_entity = Node(package='gazebo_ros', executable='spawn_entity.py',
                         arguments=['-topic', 'robot_description',
                                    '-entity','my_bot',
-                                   '-x', '0.0',
-                                   '-y', '0.0',
+                                   '-x', '-2.0',
+                                   '-y', '-0.5',
                                    '-z', '0.0',],
                                    output='screen')
 
@@ -60,6 +69,11 @@ def generate_launch_description():
             'use_depth_cam',
             default_value='true',
             description='Use depth camera (RGBD) instead of monocular camera (RGB) if true'),
+        DeclareLaunchArgument(
+            'world',
+            default_value=world_file_default,
+            description='Path to the world file to load in Gazebo'
+        ),
         rsp,
         gazebo,     
         spawn_entity,
