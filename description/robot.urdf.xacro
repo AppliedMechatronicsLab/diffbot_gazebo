@@ -2,6 +2,22 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro"  name="robot">
 
     <xacro:include filename="main_robot.xacro" />
+    <xacro:include filename="lidar.xacro" />
+    
+    <xacro:arg name="use_depth_cam" default="true"/>
+    <xacro:if value="$(arg use_depth_cam)">
+        <xacro:include filename="depth_camera.xacro"/>
+    </xacro:if>
+    <xacro:unless value="$(arg use_depth_cam)">
+        <xacro:include filename="camera.xacro"/>
+    </xacro:unless>
 
+    <xacro:arg name="use_ros2_control" default="true"/>
+    <xacro:if value="$(arg use_ros2_control)">
+        <xacro:include filename="gazebo_ros2_control.xacro" />
+    </xacro:if>
+    <xacro:unless value="$(arg use_ros2_control)">
+        <xacro:include filename="gazebo_diff_drive.xacro" />
+    </xacro:unless>
     
 </robot>
