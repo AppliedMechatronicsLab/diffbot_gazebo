@@ -13,8 +13,8 @@ def generate_launch_description():
 
     use_ros2_control = LaunchConfiguration('use_ros2_control')
     use_depth_cam= LaunchConfiguration('use_depth_cam')
-    world_file_default = os.path.join(pkg_name, 'worlds', 'turtlebot3_world.world')
-    world = LaunchConfiguration('world')
+    # world_file_default = os.path.join(pkg_name, 'worlds', 'turtlebot3_world.world')
+    # world = LaunchConfiguration('world')
 
     rsp = IncludeLaunchDescription(
                 PythonLaunchDescriptionSource([os.path.join(
@@ -62,6 +62,16 @@ def generate_launch_description():
         executable='spawner',
         arguments=["joint_broad"] 
     )
+
+    robot_localization_file_path = os.path.join(get_package_share_directory(pkg_name), 'config/ekf.yaml') 
+    robot_localization = Node(
+        package='robot_localization',
+        executable='ekf_node',
+        name='ekf_filter_node',
+        output='screen',
+        parameters=[robot_localization_file_path, 
+        {'use_sim_time': True}])
+    
     # Run the node
     return LaunchDescription([
         DeclareLaunchArgument(
@@ -72,15 +82,16 @@ def generate_launch_description():
             'use_depth_cam',
             default_value='true',
             description='Use depth camera (RGBD) instead of monocular camera (RGB) if true'),
-        DeclareLaunchArgument(
-            'world',
-            default_value=world_file_default,
-            description='Path to the world file to load in Gazebo'
-        ),
+        # DeclareLaunchArgument(
+        #     'world',
+        #     default_value=world_file_default,
+        #     description='Path to the world file to load in Gazebo'
+        # ),
         rsp,
         gazebo,
         twist_mux,
         spawn_entity,
         diff_cont_spawner,
-        joint_broad_spawner
+        joint_broad_spawner,
+        robot_localization
     ])

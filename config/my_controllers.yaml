@@ -12,7 +12,7 @@ controller_manager:
 diff_cont:
   ros__parameters:
 
-    publish_rate: 50.0
+    publish_rate: 30.0
 
     base_frame_id: base_link
 
@@ -34,7 +34,7 @@ diff_cont:
     # pose_covariance_diagonal: x
     # twist_covariance_diagonal: x
     # open_loop: x
-    # enable_odom_tf: x
+    # enable_odom_tf: true
 
     # cmd_vel_timeout: x
     # publish_limited_velocity: x

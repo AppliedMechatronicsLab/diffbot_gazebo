@@ -20,7 +20,7 @@
   <depend>image_transport_plugins</depend>
   <depend>slam_toolbox</depend>
   <depend>topic_tools</depend>
-  <depend>slam_toolbox</depend>
+
   <depend>navigation2</depend>
   <depend>navigation_msgs</depend>
   <depend>twist_mux</depend>
