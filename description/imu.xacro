@@ -2,14 +2,14 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
     <joint name="imu_joint" type="fixed">
-        <parent link="chassis_link"/>
+        <parent link="base_link"/>
         <child link="imu_link"/>
         <origin xyz="0 0 0.1" rpy="0 0 0"/>
     </joint>
     <link name="imu_link"/>
 
     <gazebo reference="imu_link">
-      <sensor name="tb3_imu" type="imu">
+      <sensor name="diffbot_imu" type="imu">
         <always_on>true</always_on>
         <update_rate>200</update_rate>
         <imu>
@@ -54,7 +54,7 @@
             </z>
           </linear_acceleration>
         </imu>
-        <plugin name="turtlebot3_imu" filename="libgazebo_ros_imu_sensor.so">
+        <plugin name="diffbot_imu" filename="libgazebo_ros_imu_sensor.so">
           <ros>
             <!-- <namespace>/tb3</namespace> -->
             <remapping>~/out:=imu</remapping>

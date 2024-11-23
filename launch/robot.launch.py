@@ -63,12 +63,14 @@ def generate_launch_description():
         arguments=["joint_broad"] 
     )
 
+    remappings=[('odometry/filtered', '/odom')]
     robot_localization_file_path = os.path.join(get_package_share_directory(pkg_name), 'config/ekf.yaml') 
     robot_localization = Node(
         package='robot_localization',
         executable='ekf_node',
         name='ekf_filter_node',
         output='screen',
+        remappings=remappings,
         parameters=[robot_localization_file_path, 
         {'use_sim_time': True}])
     
@@ -93,5 +95,5 @@ def generate_launch_description():
         spawn_entity,
         diff_cont_spawner,
         joint_broad_spawner,
-        robot_localization
+        # robot_localization
     ])
