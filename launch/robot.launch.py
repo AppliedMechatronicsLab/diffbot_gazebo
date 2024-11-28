@@ -24,14 +24,16 @@ def generate_launch_description():
                                        'use_depth_cam': use_depth_cam}.items()
     )
 
-    # Use xacro to process the file
+
     gazebo_params_path = os.path.join(
                   get_package_share_directory(pkg_name),'config','gazebo_params.yaml')
 
     gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([os.path.join(
             get_package_share_directory('gazebo_ros'), 'launch'), '/gazebo.launch.py']),
-            launch_arguments={'extra_gazebo_args': '--ros-args --params-file ' + gazebo_params_path}.items()
+            launch_arguments={'extra_gazebo_args': '--ros-args --params-file ' + gazebo_params_path,
+                              'gui': 'true',}.items(),
+            
         )
 
     twist_mux_params = os.path.join(get_package_share_directory(pkg_name),'config','twist_mux.yaml')

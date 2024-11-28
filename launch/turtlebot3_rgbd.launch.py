@@ -60,9 +60,13 @@ def generate_launch_description():
     remappings=[
           ('rgb/image', '/camera/image_raw'),
           ('rgb/camera_info', '/camera/camera_info'),
+          ('depth/image', '/camera/depth/image_raw')]
+
+    remappings_control=[
+          ('rgb/image', '/camera/image_raw'),
+          ('rgb/camera_info', '/camera/camera_info'),
           ('depth/image', '/camera/depth/image_raw'),
           ('odom', '/diff_cont/odom')]
-
     return LaunchDescription([
 
         # Launch arguments

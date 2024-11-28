@@ -37,6 +37,7 @@
             <origin xyz="${chassis_width/2} 0 ${chassis_height/2}" rpy="0 0 0"/>
             <geometry>
                 <box size= "${chassis_length} ${chassis_width} ${chassis_height}"/>
+                <!-- <mesh filename="package://diffbot_gazebo/description/Omni_3_Bot.dae" scale="1 1 1" /> -->
             </geometry>
             <material name="red"/>
         </visual>
