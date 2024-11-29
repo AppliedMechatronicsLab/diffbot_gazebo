@@ -49,12 +49,17 @@ def generate_launch_description():
     parameters={
           'frame_id':'base_link',
           'use_sim_time':use_sim_time,
-          'subscribe_depth':True,
+          'subscribe_depth':False,
+          'subscribe_rgbd':True,
           'use_action_for_goal':True,
           'qos_image':qos,
           'qos_imu':qos,
           'Reg/Force3DoF':'true',
-          'Optimizer/GravitySigma':'0' # Disable imu constraints (we are already in 2D)
+          'Optimizer/GravitySigma':'0', # Disable imu constraints (we are already in 2D)
+          'RGBD/AngularUpdate':'0.01',
+          'RGBD/LinearUpdate':'0.01',
+          'RGBD/OptimizeFromGraphEnd':'false',
+          'subscribe_scan':True
     }
 
     remappings=[
@@ -89,7 +94,7 @@ def generate_launch_description():
             condition=UnlessCondition(localization),
             package='rtabmap_slam', executable='rtabmap', output='screen',
             parameters=[parameters],
-            remappings=remappings,
+            remappings=remappings_control,
             arguments=['-d']), # This will delete the previous database (~/.ros/rtabmap.db)
             
         # Localization mode:
@@ -99,7 +104,7 @@ def generate_launch_description():
             parameters=[parameters,
               {'Mem/IncrementalMemory':'False',
                'Mem/InitWMWithAllNodes':'True'}],
-            remappings=remappings),
+            remappings=remappings_control),
 
         # Node(
         #     package='rtabmap_viz', executable='rtabmap_viz', output='screen',
