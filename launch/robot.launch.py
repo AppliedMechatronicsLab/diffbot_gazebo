@@ -32,7 +32,7 @@ def generate_launch_description():
         PythonLaunchDescriptionSource([os.path.join(
             get_package_share_directory('gazebo_ros'), 'launch'), '/gazebo.launch.py']),
             launch_arguments={'extra_gazebo_args': '--ros-args --params-file ' + gazebo_params_path,
-                              'gui': 'false',}.items(),
+                              'gui': 'true',}.items(),
             
         )
 
@@ -48,7 +48,7 @@ def generate_launch_description():
     spawn_entity = Node(package='gazebo_ros', executable='spawn_entity.py',
                         arguments=['-topic', 'robot_description',
                                    '-entity','my_bot',
-                                   '-x', '-2.0',
+                                   '-x', '0.0',
                                    '-y', '-0.5',
                                    '-z', '0.0',],
                                    output='screen')

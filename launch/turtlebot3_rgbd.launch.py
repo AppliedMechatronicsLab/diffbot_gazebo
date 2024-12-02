@@ -49,17 +49,12 @@ def generate_launch_description():
     parameters={
           'frame_id':'base_link',
           'use_sim_time':use_sim_time,
-          'subscribe_depth':False,
-          'subscribe_rgbd':True,
+          'subscribe_depth':True,
           'use_action_for_goal':True,
           'qos_image':qos,
           'qos_imu':qos,
           'Reg/Force3DoF':'true',
-          'Optimizer/GravitySigma':'0', # Disable imu constraints (we are already in 2D)
-          'RGBD/AngularUpdate':'0.01',
-          'RGBD/LinearUpdate':'0.01',
-          'RGBD/OptimizeFromGraphEnd':'false',
-          'subscribe_scan':True
+          'Optimizer/GravitySigma':'0' # Disable imu constraints (we are already in 2D)
     }
 
     remappings=[
