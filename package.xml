@@ -22,7 +22,7 @@
   <depend>topic_tools</depend>
 
   <depend>navigation2</depend>
-  <depend>navigation_msgs</depend>
+  <depend>nav2_msgs</depend>
   <depend>twist_mux</depend>
   <depend>rtabmap_ros</depend>
   
