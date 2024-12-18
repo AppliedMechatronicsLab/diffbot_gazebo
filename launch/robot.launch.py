@@ -13,6 +13,7 @@ def generate_launch_description():
 
     use_ros2_control = LaunchConfiguration('use_ros2_control')
     use_depth_cam= LaunchConfiguration('use_depth_cam')
+    gui= LaunchConfiguration('gui')
     # world_file_default = os.path.join(pkg_name, 'worlds', 'turtlebot3_world.world')
     # world = LaunchConfiguration('world')
 
@@ -32,7 +33,7 @@ def generate_launch_description():
         PythonLaunchDescriptionSource([os.path.join(
             get_package_share_directory('gazebo_ros'), 'launch'), '/gazebo.launch.py']),
             launch_arguments={'extra_gazebo_args': '--ros-args --params-file ' + gazebo_params_path,
-                              'gui': 'false',}.items(),
+                              'gui': gui,}.items(),
             
         )
 
@@ -86,11 +87,11 @@ def generate_launch_description():
             'use_depth_cam',
             default_value='true',
             description='Use depth camera (RGBD) instead of monocular camera (RGB) if true'),
-        # DeclareLaunchArgument(
-        #     'world',
-        #     default_value=world_file_default,
-        #     description='Path to the world file to load in Gazebo'
-        # ),
+        DeclareLaunchArgument(
+            'gui',
+            default_value='true',
+            description='Path to the world file to load in Gazebo'
+        ),
         rsp,
         gazebo,
         twist_mux,
