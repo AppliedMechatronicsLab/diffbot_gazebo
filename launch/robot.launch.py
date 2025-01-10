@@ -14,13 +14,17 @@ def generate_launch_description():
     use_ros2_control = LaunchConfiguration('use_ros2_control')
     use_depth_cam= LaunchConfiguration('use_depth_cam')
     gui= LaunchConfiguration('gui')
-    # world_file_default = os.path.join(pkg_name, 'worlds', 'turtlebot3_world.world')
-    # world = LaunchConfiguration('world')
+    use_sim_time = LaunchConfiguration('use_sim_time')
 
+    world_file_default = os.path.join(get_package_share_directory(pkg_name), 'worlds', 'turtlebot3_world.world')
+    world = LaunchConfiguration('world')
+    world_file = LaunchConfiguration('world_file')
+    # world_file = os.path.join(get_package_share_directory(pkg_name),'worlds',world.perform())
+    
     rsp = IncludeLaunchDescription(
                 PythonLaunchDescriptionSource([os.path.join(
                     get_package_share_directory(pkg_name),'launch','rsp.launch.py'
-                )]), launch_arguments={'use_sim_time': 'true', 
+                )]), launch_arguments={'use_sim_time': use_sim_time, 
                                        'use_ros2_control': use_ros2_control,
                                        'use_depth_cam': use_depth_cam}.items()
     )
@@ -33,7 +37,9 @@ def generate_launch_description():
         PythonLaunchDescriptionSource([os.path.join(
             get_package_share_directory('gazebo_ros'), 'launch'), '/gazebo.launch.py']),
             launch_arguments={'extra_gazebo_args': '--ros-args --params-file ' + gazebo_params_path,
-                              'gui': gui,}.items(),
+                              'gui': gui,
+                              'world': world_file,
+                              }.items(),
             
         )
 
@@ -91,6 +97,21 @@ def generate_launch_description():
             'gui',
             default_value='true',
             description='Path to the world file to load in Gazebo'
+        ),
+        DeclareLaunchArgument(
+            'use_sim_time',
+            default_value='true',
+            description='use sim time if true'
+        ),
+        DeclareLaunchArgument(
+            'world',
+            default_value='turtlebot3_world',
+            description='world to load'
+        ),
+        DeclareLaunchArgument(
+            'world_file',
+            default_value=[get_package_share_directory(pkg_name),'/worlds/',LaunchConfiguration('world'),'.world'],
+            description='world to load'
         ),
         rsp,
         gazebo,
