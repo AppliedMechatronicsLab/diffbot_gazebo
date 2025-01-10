@@ -83,6 +83,14 @@ def generate_launch_description():
         parameters=[robot_localization_file_path, 
         {'use_sim_time': True}])
     
+
+    joystick = IncludeLaunchDescription(
+                PythonLaunchDescriptionSource([os.path.join(
+                    get_package_share_directory(pkg_name),'launch','joystick.launch.py'
+                )]), launch_arguments={'use_sim_time': 'true'}.items()
+    )
+
+
     # Run the node
     return LaunchDescription([
         DeclareLaunchArgument(
@@ -119,5 +127,6 @@ def generate_launch_description():
         spawn_entity,
         diff_cont_spawner,
         joint_broad_spawner,
+        joystick
         # robot_localization
     ])
