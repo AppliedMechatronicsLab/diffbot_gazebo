@@ -3,7 +3,7 @@
 
     <ros2_control name="GazeboSystem" type="system">
         <hardware>
-            <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+            <plugin>ign_ros2_control/IgnitionSystem</plugin>
         </hardware>
         <joint name="left_wheel_joint">
             <command_interface name="velocity">
@@ -24,8 +24,8 @@
     </ros2_control>
 
     <gazebo>
-        <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
-            <parameters>$(find diffbot_gazebo)/config/my_controllers.yaml</parameters>        
+        <plugin name="ign_ros2_control::IgnitionROS2ControlPlugin" filename="libign_ros2_control-system">
+            <parameters>$(find diffbot_scara)/config/my_controllers.yaml</parameters>        
         </plugin>
     </gazebo>
 

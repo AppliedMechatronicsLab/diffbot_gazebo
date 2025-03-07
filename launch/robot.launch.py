@@ -16,10 +16,20 @@ def generate_launch_description():
     gui= LaunchConfiguration('gui')
     use_sim_time = LaunchConfiguration('use_sim_time')
 
-    world_file_default = os.path.join(get_package_share_directory(pkg_name), 'worlds', 'turtlebot3_world.world')
+    world_file_default = os.path.join(get_package_share_directory(pkg_name), 
+                                      'worlds', 'empty_world.world')
+    
+    default_world = os.path.join(
+        get_package_share_directory(pkg_name),
+        'worlds',
+        'empty.world'
+        )    
     world = LaunchConfiguration('world')
-    world_file = LaunchConfiguration('world_file')
-    # world_file = os.path.join(get_package_share_directory(pkg_name),'worlds',world.perform())
+    world_arg = DeclareLaunchArgument(
+        'world',
+        default_value=default_world,
+        description='World to load'
+        )
     
     rsp = IncludeLaunchDescription(
                 PythonLaunchDescriptionSource([os.path.join(
@@ -29,18 +39,11 @@ def generate_launch_description():
                                        'use_depth_cam': use_depth_cam}.items()
     )
 
-
-    gazebo_params_path = os.path.join(
-                  get_package_share_directory(pkg_name),'config','gazebo_params.yaml')
-
     gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([os.path.join(
-            get_package_share_directory('gazebo_ros'), 'launch'), '/gazebo.launch.py']),
-            launch_arguments={'extra_gazebo_args': '--ros-args --params-file ' + gazebo_params_path,
-                              'gui': gui,
-                              'world': world_file,
-                              }.items(),
-            
+            get_package_share_directory('ros_gz_sim'), 'launch', 'gz_sim.launch.py')]),
+            launch_arguments={'gz_args': ['-r -v4 ', world],'on_exit_shutdown': 'true'
+                              }.items(),     
         )
 
     twist_mux_params = os.path.join(get_package_share_directory(pkg_name),'config','twist_mux.yaml')
@@ -52,12 +55,10 @@ def generate_launch_description():
         )
 
 
-    spawn_entity = Node(package='gazebo_ros', executable='spawn_entity.py',
+    spawn_entity = Node(package='ros_gz_sim', executable='create',
                         arguments=['-topic', 'robot_description',
-                                   '-entity','my_bot',
-                                   '-x', '-2.0',
-                                   '-y', '-0.5',
-                                   '-z', '0.0',],
+                                   '-name','my_bot',
+                                   '-z', '0.1',],
                                    output='screen')
 
     diff_cont_spawner= Node(
@@ -90,7 +91,22 @@ def generate_launch_description():
                 )]), launch_arguments={'use_sim_time': 'true'}.items()
     )
 
-
+# bridge 
+    bridge_params = os.path.join(get_package_share_directory(pkg_name),'config','gz_bridge.yaml')
+    ros_gz_bridge = Node(
+            package="ros_gz_bridge",
+            executable="parameter_bridge",
+            arguments=[
+                '--ros-args',
+                '-p',
+                f'config_file:={bridge_params}'
+            ],
+        )
+    ros_gz_image_bridge = Node(
+        package="ros_gz_image",
+        executable="image_bridge",
+        arguments=["/camera/image_raw"]
+    )
     # Run the node
     return LaunchDescription([
         DeclareLaunchArgument(
@@ -111,22 +127,15 @@ def generate_launch_description():
             default_value='true',
             description='use sim time if true'
         ),
-        DeclareLaunchArgument(
-            'world',
-            default_value='turtlebot3_world',
-            description='world to load'
-        ),
-        DeclareLaunchArgument(
-            'world_file',
-            default_value=[get_package_share_directory(pkg_name),'/worlds/',LaunchConfiguration('world'),'.world'],
-            description='world to load'
-        ),
+        world_arg,
         rsp,
         gazebo,
         twist_mux,
         spawn_entity,
         diff_cont_spawner,
         joint_broad_spawner,
-        joystick
+        joystick,
         # robot_localization
+        ros_gz_bridge,
+        ros_gz_image_bridge
     ])
