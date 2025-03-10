@@ -89,7 +89,7 @@ def generate_launch_description():
             condition=UnlessCondition(localization),
             package='rtabmap_slam', executable='rtabmap', output='screen',
             parameters=[parameters],
-            remappings=remappings,
+            remappings=remappings_control,
             arguments=['-d']), # This will delete the previous database (~/.ros/rtabmap.db)
             
         # Localization mode:
