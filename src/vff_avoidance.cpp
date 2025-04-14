@@ -126,17 +126,17 @@ AvoidanceNode::make_marker(const std::vector<float> & vector, VFFColors vff_colo
     marker.scale.y = 0.1;
     switch (vff_color) {
     case RED:
-    marker.id = 0;
-    marker.color.r = 1.0;
-    break;
+        marker.id = 0;
+        marker.color.r = 1.0;
+        break;
     case GREEN:
-    marker.id = 1;
-    marker.color.g = 1.0;
-    break;
+        marker.id = 1;
+        marker.color.g = 1.0;
+        break;
     case BLUE:
-    marker.id = 2;
-    marker.color.b = 1.0;
-    break;
+        marker.id = 2;
+        marker.color.b = 1.0;
+        break;
     }
     marker.color.a = 1.0;
     return marker;
