@@ -54,8 +54,7 @@
             </z>
           </linear_acceleration>
         </imu>
-        <plugin name="diffbot_imu" filename="libgazebo_ros_imu_sensor.so">
-          <ros>
+        <plugin filename="libignition-gazebo-imu-system.so" name="ignition::gazebo::systems::Imu">          <ros>
             <!-- <namespace>/tb3</namespace> -->
             <remapping>~/out:=imu</remapping>
           </ros>

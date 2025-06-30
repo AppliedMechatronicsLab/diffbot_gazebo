@@ -18,6 +18,13 @@
   gz_type_name: "ignition.msgs.CameraInfo"
   direction: GZ_TO_ROS
 
+# gz topic published by IMU Sensors plugin
+- ros_topic_name: "imu"
+  gz_topic_name: "/world/empty/model/my_bot/link/base_link/sensor/diffbot_imu/imu"
+  ros_type_name: "sensor_msgs/msg/Imu"
+  gz_type_name: "ignition.msgs.IMU"
+  direction: GZ_TO_ROS
+
 #   # gz topic subscribed to by DiffDrive plugin
 # - ros_topic_name: "diff_cont/cmd_vel_unstamped"
 #   gz_topic_name: "cmd_vel"

@@ -115,7 +115,7 @@ def generate_launch_description():
             description='Use ros2_control if true'),
         DeclareLaunchArgument(
             'use_depth_cam',
-            default_value='true',
+            default_value='false',
             description='Use depth camera (RGBD) instead of monocular camera (RGB) if true'),
         DeclareLaunchArgument(
             'gui',
