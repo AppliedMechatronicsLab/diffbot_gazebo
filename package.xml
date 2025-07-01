@@ -20,6 +20,8 @@
   <depend>image_transport_plugins</depend>
   <depend>slam_toolbox</depend>
   <depend>topic_tools</depend>
+  <depend>robot_localization</depend>
+  <depend>twist_stamper</depend>
 
   <depend>navigation2</depend>
   <depend>nav2_msgs</depend>

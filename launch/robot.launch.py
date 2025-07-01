@@ -130,12 +130,12 @@ def generate_launch_description():
         world_arg,
         rsp,
         gazebo,
-        twist_mux,
+        # twist_mux,
         spawn_entity,
         diff_cont_spawner,
         joint_broad_spawner,
-        joystick,
-        # robot_localization
+        # joystick,
+        robot_localization,
         ros_gz_bridge,
         ros_gz_image_bridge
     ])
