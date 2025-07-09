@@ -42,7 +42,7 @@ def generate_launch_description():
     gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([os.path.join(
             get_package_share_directory('ros_gz_sim'), 'launch', 'gz_sim.launch.py')]),
-            launch_arguments={'gz_args': ['-r -v4 ', world],'on_exit_shutdown': 'true'
+            launch_arguments={'gz_args': ['-r ', world],'on_exit_shutdown': 'true'
                               }.items(),     
         )
 
@@ -74,7 +74,8 @@ def generate_launch_description():
     )
 
     remappings=[('odometry/filtered', '/odom')]
-    robot_localization_file_path = os.path.join(get_package_share_directory(pkg_name), 'config/ekf.yaml') 
+    robot_localization_file_path = os.path.join(get_package_share_directory(pkg_name), 
+                                                'config/ekf.yaml') 
     robot_localization = Node(
         package='robot_localization',
         executable='ekf_node',
