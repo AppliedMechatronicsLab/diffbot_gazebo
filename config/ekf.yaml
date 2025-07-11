@@ -1,4 +1,6 @@
 ### ekf config file ###
+
+# https://github.com/ros-navigation/navigation2_tutorials/blob/rolling/nav2_gps_waypoint_follower_demo/config/dual_ekf_navsat_params.yaml
 ekf_filter_node:
     ros__parameters:
 
@@ -8,7 +10,7 @@ ekf_filter_node:
 # The frequency, in Hz, at which the filter will output a position estimate. Note that the filter will not begin
 # computation until it receives at least one message from one of the inputs. It will then run continuously at the
 # frequency specified here, regardless of whether it receives more measurements. Defaults to 30 if unspecified.
-        frequency: 30.0
+        frequency: 60.0
 
 # The period, in seconds, after which we consider a sensor to have timed out. In this event, we carry out a predict
 # cycle on the EKF without correcting it. This parameter can be thought of as the minimum frequency with which the
@@ -89,33 +91,38 @@ ekf_filter_node:
 # do not provide some of the state variables estimated by the filter. For example, a TwistWithCovarianceStamped message
 # has no pose information, so the first six values would be meaningless in that case. Each vector defaults to all false
 # if unspecified, effectively making this parameter required for each sensor.
-        odom0_config: [true, true, false,
-                       false, false, true,
-                       true,  false,  false,
+        odom0_config: [false, false, false,
+                       false, false, false,
+                       true,  true,  true,
                        false, false, true,
                        false, false, false]
 
-        odom0_queue_size: 2
-        odom0_nodelay: false
+        odom0_queue_size: 10
         odom0_differential: false
         odom0_relative: false
-        odom0_pose_rejection_threshold: 5.0
-        odom0_twist_rejection_threshold: 1.0
+        
+        # 3 cai dong nay sinh ra van de bi lech trajectory 
+        # TODO: tim xem y nghia cua no la cai gi
+        # odom0_nodelay: false
+        # odom0_pose_rejection_threshold: 5.0
+        # odom0_twist_rejection_threshold: 1.0
 
         imu0: /imu
         imu0_config: [false, false, false,
-                      true,  true,  true,
+                      false,  false,  true,
                       false, false, false,
-                      true,  true,  true,
-                      false,  false,  false]
+                      false,  false,  true,
+                      true,  false,  false]
         
         imu0_nodelay: false
         imu0_differential: false
-        imu0_relative: true
-        imu0_queue_size: 7
-        imu0_pose_rejection_threshold: 0.8                 # Note the difference in parameter names
-        imu0_twist_rejection_threshold: 0.8                #
-        imu0_linear_acceleration_rejection_threshold: 0.8  #
+        imu0_queue_size: 10
+        
+        # may dong duoi nay chua biet de lam gi nhung khong co 
+        # imu0_relative: true
+        # imu0_pose_rejection_threshold: 0.8                 # Note the difference in parameter names
+        # imu0_twist_rejection_threshold: 0.8                #
+        # imu0_linear_acceleration_rejection_threshold: 0.8  #
 
 # [ADVANCED] Some IMUs automatically remove acceleration due to gravity, and others don't. If yours doesn't, please set
 # this to true, and *make sure* your data conforms to REP-103, specifically, that the data is in ENU frame.
